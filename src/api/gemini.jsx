@@ -3,11 +3,13 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Initialize the API with your key
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_REACT_APP_GEMINI_API_KEY);
+console.log(import.meta.env.VITE_REACT_APP_GEMINI_API_KEY);
+console.log(genAI);
 
 export const generatePrompts = async (prompt) => {
   try {
     // Get the generative model
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
     // Generate content
     const result = await model.generateContent(prompt);
