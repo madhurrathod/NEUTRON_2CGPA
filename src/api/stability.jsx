@@ -14,7 +14,6 @@ const generateImage = async (prompt, maxRetries = 3) => {
   let retryCount = 0;
   let lastError = null;
   const apiKey = import.meta.env.VITE_REACT_APP_STABILITY_API_KEY;
-
   try {
     validateApiKey(apiKey);
   } catch (error) {
@@ -24,22 +23,23 @@ const generateImage = async (prompt, maxRetries = 3) => {
 
   while (retryCount < maxRetries) {
     try {
-      const response = await fetch("https://api.stability.ai/v1/generation/stable-diffusion-v1-6/text-to-image", {
+      const formData = new FormData();
+      formData.append("prompt", prompt);
+      formData.append("cfg_scale", 7);
+      formData.append("height", 512);
+      formData.append("width", 512);
+      formData.append("samples", 1);
+      formData.append("steps", 30);
+
+      const response = await fetch("https://api.stability.ai/v2beta/stable-image/generate/core", {
         method: "POST",
         headers: {
           Authorization: `Bearer ${apiKey}`,
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
+          Accept: 'application/json',
         },
-        body: JSON.stringify({
-          text_prompts: [{ text: prompt }],
-          cfg_scale: 7,
-          height: 512,
-          width: 512,
-          samples: 1,
-          steps: 30,
-        }),
+        body: formData,
       });
+      console.log(response); // <---- console.log here
 
       if (!response.ok) {
         if (response.status === 401) {
@@ -60,9 +60,10 @@ const generateImage = async (prompt, maxRetries = 3) => {
       }
 
       const data = await response.json();
+      console.log(data);
 
-      if (data?.artifacts?.length > 0) {
-        return `data:image/png;base64,${data.artifacts[0].base64}`;
+      if (data?.image) {
+        return `data:image/png;base64,${data.image}`;
       } else {
         throw new Error("No image was generated. Please try again with a different prompt.");
       }
