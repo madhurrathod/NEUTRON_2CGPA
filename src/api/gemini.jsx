@@ -3,8 +3,6 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Initialize the API with your key
 const genAI = new GoogleGenerativeAI(import.meta.env.VITE_REACT_APP_GEMINI_API_KEY);
-console.log(import.meta.env.VITE_REACT_APP_GEMINI_API_KEY);
-console.log(genAI);
 
 export const generatePrompts = async (prompt) => {
   try {
