@@ -1,11 +1,8 @@
 const sleep = (ms) => new Promise(res => setTimeout(res, ms));
 
-const generateImage = async (prompt, maxRetries = 3) => {
-  const apiKey = import.meta.env.VITE_REACT_APP_HF_API_KEY;
-
-  if (!apiKey) {
-    throw new Error("Missing HuggingFace API key");
-  }
+  const generateImage = async (prompt) => {
+  return `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}`;
+};
 
   let retry = 0;
 
