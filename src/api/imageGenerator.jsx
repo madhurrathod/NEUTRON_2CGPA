@@ -12,7 +12,7 @@ const generateImage = async (prompt, maxRetries = 3) => {
   while (retry < maxRetries) {
     try {
       const response = await fetch(
-        "https://api-inference.huggingface.co/models/stabilityai/stable-diffusion-2-1",
+        "https://api-inference.huggingface.co/models/prompthero/openjourney",
         {
           method: "POST",
           headers: {
